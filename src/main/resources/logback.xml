@@ -1,0 +1,18 @@
+<configuration>
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.zerock" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="consoleAppender" />
+    </logger>
+
+    <root>
+        <level value="DEBUG" />
+        <appender-ref ref="consoleAppender" />
+    </root>
+</configuration>
