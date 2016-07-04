@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- http://www.mybatis.org/mybatis-3/ko/getting-started.html 를 참고한다 -->
+
+    <typeAliases>
+        <!-- parameterType, resultType 에 사용하는 클래스의 이름을 알리아스로 사용할 수 있다 -->
+        <package name="org.zerock.domain"/>
+    </typeAliases>
+</configuration>
