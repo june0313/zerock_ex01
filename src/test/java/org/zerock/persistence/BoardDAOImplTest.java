@@ -12,12 +12,10 @@ import org.zerock.configuration.RootContextConfiguration;
 import org.zerock.configuration.servlet.ServletContextConfiguration;
 import org.zerock.domain.BoardVO;
 
-import javax.servlet.ServletContext;
-
 import java.util.List;
-import java.util.function.Consumer;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by wayne on 2016. 7. 1..
@@ -53,5 +51,16 @@ public class BoardDAOImplTest {
 	public void testListAll() throws Exception {
 		List<BoardVO> boardVOList = dao.listAll();
 		boardVOList.forEach(boardVO -> System.out.println(boardVO.getBno() + " : " + boardVO.getTitle()));
+	}
+
+	@Test
+	public void testListPage() throws Exception {
+		int page = 3;
+
+		List<BoardVO> list = dao.listPage(page);
+
+		list.forEach(boardVO -> System.out.println(boardVO.getBno() + " : " + boardVO.getTitle()));
+
+		assertThat(list.size(), is(10));
 	}
 }

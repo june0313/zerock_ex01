@@ -18,4 +18,6 @@ public interface BoardDAO {
 	void delete(Integer bno) throws Exception;
 
 	List<BoardVO> listAll() throws Exception;
+
+	List<BoardVO> listPage(int page) throws Exception;
 }
