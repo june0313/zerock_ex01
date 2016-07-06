@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 import java.util.List;
 
@@ -54,5 +55,9 @@ public class BoardDAOImpl implements BoardDAO {
 		page = (page - 1) * 10;
 
 		return session.selectList(NAMESPACE + ".listPage", page);
+	}
+
+	@Override public List<BoardVO> listCriteria(Criteria criteria) throws Exception {
+		return session.selectList(NAMESPACE + ".listCriteria", criteria);
 	}
 }

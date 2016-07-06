@@ -3,6 +3,7 @@ package org.zerock.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 import org.zerock.persistence.BoardDAO;
 
 import java.util.List;
@@ -39,5 +40,9 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardVO> listAll() throws Exception {
 		return dao.listAll();
+	}
+
+	@Override public List<BoardVO> listCriteria(Criteria criteria) throws Exception {
+		return dao.listCriteria(criteria);
 	}
 }

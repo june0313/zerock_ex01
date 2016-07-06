@@ -11,6 +11,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.zerock.configuration.RootContextConfiguration;
 import org.zerock.configuration.servlet.ServletContextConfiguration;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 import java.util.List;
 
@@ -42,9 +43,9 @@ public class BoardDAOImplTest {
 
 	@Test
 	public void testRead() throws Exception {
-		logger.info(dao.read(1).getTitle());
-		logger.info(dao.read(1).getContent());
-		logger.info(dao.read(1).getWriter());
+		logger.info(dao.read(11).getTitle());
+		logger.info(dao.read(11).getContent());
+		logger.info(dao.read(11).getWriter());
 	}
 
 	@Test
@@ -62,5 +63,17 @@ public class BoardDAOImplTest {
 		list.forEach(boardVO -> System.out.println(boardVO.getBno() + " : " + boardVO.getTitle()));
 
 		assertThat(list.size(), is(10));
+	}
+
+	@Test
+	public void testListCriteria() throws Exception {
+		Criteria criteria = new Criteria();
+		criteria.setPage(2);
+		criteria.setPerPageNum(20);
+
+		List<BoardVO> boardVOList = dao.listCriteria(criteria);
+
+		boardVOList.forEach(boardVO -> System.out.println(boardVO.getBno() + " : " + boardVO.getTitle()));
+
 	}
 }

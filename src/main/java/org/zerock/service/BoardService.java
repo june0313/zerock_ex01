@@ -1,6 +1,7 @@
 package org.zerock.service;
 
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface BoardService {
 	void remove(Integer bno) throws Exception;
 
 	List<BoardVO> listAll() throws Exception;
+
+	List<BoardVO> listCriteria(Criteria criteria) throws Exception;
 }
