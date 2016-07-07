@@ -21,4 +21,6 @@ public interface BoardService {
 	List<BoardVO> listAll() throws Exception;
 
 	List<BoardVO> listCriteria(Criteria criteria) throws Exception;
+
+	int listCountCriteria(Criteria criteria) throws Exception;
 }

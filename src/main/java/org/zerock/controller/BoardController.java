@@ -59,13 +59,13 @@ public class BoardController {
 
 	@RequestMapping(value = "/listPage", method = RequestMethod.GET)
 	public void listPage(Criteria criteria, Model model) throws Exception {
-//		log.info(criteria.toString());
+		log.info(criteria.toString());
 
 		model.addAttribute("list", boardService.listCriteria(criteria));
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(criteria);
-		pageMaker.setTotalCount(131);
+		pageMaker.setTotalCount(boardService.listCountCriteria(criteria));
 
 		model.addAttribute("pageMaker", pageMaker);
 	}
