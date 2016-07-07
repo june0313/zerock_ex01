@@ -1,13 +1,14 @@
 package org.zerock.persistence;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.zerock.configuration.RootContextConfiguration;
 import org.zerock.configuration.servlet.ServletContextConfiguration;
 import org.zerock.domain.BoardVO;
@@ -25,12 +26,12 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfiguration.class, ServletContextConfiguration.class})
 @WebAppConfiguration
+@Slf4j
 public class BoardDAOImplTest {
 
 	@Autowired
 	private BoardDAO dao;
 
-	private static final Logger logger = LoggerFactory.getLogger(BoardDAOImplTest.class);
 
 	@Test
 	public void testCreate() throws Exception {
@@ -43,9 +44,9 @@ public class BoardDAOImplTest {
 
 	@Test
 	public void testRead() throws Exception {
-		logger.info(dao.read(11).getTitle());
-		logger.info(dao.read(11).getContent());
-		logger.info(dao.read(11).getWriter());
+		log.info(dao.read(11).getTitle());
+		log.info(dao.read(11).getContent());
+		log.info(dao.read(11).getWriter());
 	}
 
 	@Test
@@ -74,6 +75,36 @@ public class BoardDAOImplTest {
 		List<BoardVO> boardVOList = dao.listCriteria(criteria);
 
 		boardVOList.forEach(boardVO -> System.out.println(boardVO.getBno() + " : " + boardVO.getTitle()));
+
+	}
+
+	@Test
+	public void testURI() throws Exception {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+			.path("/board/read")
+			.queryParam("bno", 12)
+			.queryParam("perPageNum", 20)
+			.build();
+
+		log.info("/board/read?bno=12&perPageNum=20");
+		log.info(uriComponents.toString());
+
+		assertThat(uriComponents.toString(), is("/board/read?bno=12&perPageNum=20"));
+	}
+
+	@Test
+	public void testURI2() throws Exception {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+			.path("/{module}/{page}")
+			.queryParam("bno", 12)
+			.queryParam("perPageNum", 20)
+			.build()
+			.expand("board", "read")
+			.encode();
+
+		log.info(uriComponents.toString());
+
+		assertThat(uriComponents.toString(), is("/board/read?bno=12&perPageNum=20"));
 
 	}
 }
