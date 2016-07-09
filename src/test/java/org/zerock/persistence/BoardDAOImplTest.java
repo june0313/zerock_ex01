@@ -13,6 +13,7 @@ import org.zerock.configuration.RootContextConfiguration;
 import org.zerock.configuration.servlet.ServletContextConfiguration;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.SearchCriteria;
 
 import java.util.List;
 
@@ -105,6 +106,59 @@ public class BoardDAOImplTest {
 		log.info(uriComponents.toString());
 
 		assertThat(uriComponents.toString(), is("/board/read?bno=12&perPageNum=20"));
+	}
 
+	@Test
+	public void testDynamicSQL1() throws Exception {
+		SearchCriteria cri = new SearchCriteria();
+		cri.setPage(1);
+		cri.setKeyword("글");
+		cri.setSearchType("t");
+
+		log.info("===============================================");
+
+		List<BoardVO> boardVOList = dao.listSearch(cri);
+
+		boardVOList.forEach(boardVO -> log.info(boardVO.getBno() + " : " + boardVO.getTitle()));
+
+		log.info("===============================================");
+
+		log.info("COUNT : " + dao.listSearchCount(cri));
+	}
+
+	@Test
+	public void testDynamicSQL2() throws Exception {
+		SearchCriteria cri = new SearchCriteria();
+		cri.setPage(1);
+		cri.setKeyword("user");
+		cri.setSearchType("w");
+
+		log.info("===============================================");
+
+		List<BoardVO> boardVOList = dao.listSearch(cri);
+
+		boardVOList.forEach(boardVO -> log.info(boardVO.getBno() + " : " + boardVO.getWriter() + " : " + boardVO.getTitle()));
+
+		log.info("===============================================");
+
+		log.info("COUNT : " + dao.listSearchCount(cri));
+	}
+
+	@Test
+	public void testDynamicSQL3() throws Exception {
+		SearchCriteria cri = new SearchCriteria();
+		cri.setPage(1);
+		cri.setKeyword("j");
+		cri.setSearchType("tcw");
+
+		log.info("===============================================");
+
+		List<BoardVO> boardVOList = dao.listSearch(cri);
+
+		boardVOList.forEach(boardVO -> log.info(boardVO.getBno() + " : " + boardVO.getWriter() + " : " + boardVO.getTitle()));
+
+		log.info("===============================================");
+
+		log.info("COUNT : " + dao.listSearchCount(cri));
 	}
 }

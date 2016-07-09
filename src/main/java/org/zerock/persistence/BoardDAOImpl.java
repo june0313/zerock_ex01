@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.SearchCriteria;
 
 import java.util.List;
 
@@ -63,5 +64,15 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override public int countPaging(Criteria criteria) throws Exception {
 		return session.selectOne(NAMESPACE + ".countPaging", criteria);
+	}
+
+	@Override
+	public List<BoardVO> listSearch(SearchCriteria cri) throws Exception {
+		return session.selectList(NAMESPACE + ".listSearch", cri);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) throws Exception {
+		return session.selectOne(NAMESPACE + ".listSearchCount", cri);
 	}
 }

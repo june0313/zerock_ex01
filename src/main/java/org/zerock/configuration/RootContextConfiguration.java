@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
 
@@ -18,6 +19,7 @@ import javax.sql.DataSource;
  *
  */
 @Configuration
+@EnableWebMvc
 @ComponentScan(basePackages = {"org.zerock.persistence", "org.zerock.service"})
 public class RootContextConfiguration {
 
