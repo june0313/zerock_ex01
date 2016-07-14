@@ -1,8 +1,10 @@
 package org.zerock.persistence;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.ReplyVO;
 
 import java.util.List;
@@ -37,5 +39,15 @@ public class ReplyDAOImpl implements ReplyDAO {
 	@Override
 	public void delete(Integer rno) throws Exception {
 		session.delete(NAMESPACE + ".delete", rno);
+	}
+
+	@Override
+	public List<ReplyVO> listPage(Integer bno, Criteria cri) throws Exception {
+		return session.selectList(NAMESPACE + ".listPage", ImmutableMap.of("bno", bno, "cri", cri));
+	}
+
+	@Override
+	public int count(Integer bno) throws Exception {
+		return session.selectOne(NAMESPACE + ".count", bno);
 	}
 }

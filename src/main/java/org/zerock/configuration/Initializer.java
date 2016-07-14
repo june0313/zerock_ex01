@@ -4,6 +4,7 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.zerock.configuration.servlet.ServletContextConfiguration;
 
@@ -26,6 +27,7 @@ public class Initializer implements WebApplicationInitializer {
 		this.addRootContextLoaderListener(servletContext);
 		this.addDispatcherServlet(servletContext);
 		this.addUTF8CharacterEncodingFilter(servletContext);
+		this.addHiddenHttpMethodFilter(servletContext);
 	}
 
 	/**
@@ -65,5 +67,15 @@ public class Initializer implements WebApplicationInitializer {
 		characterEncodingFilter.setEncoding("UTF-8");
 		FilterRegistration.Dynamic filter = servletContext.addFilter("encoding", characterEncodingFilter);
 		filter.addMappingForUrlPatterns(null, false, "/*");
+	}
+
+	/**
+	 * HiddenHttpMethodFilter 를 추가한다
+	 *
+	 * @param servletContext 초기화할 ServletContext
+	 */
+	private void addHiddenHttpMethodFilter(ServletContext servletContext) {
+		HiddenHttpMethodFilter filter = new HiddenHttpMethodFilter();
+		servletContext.addFilter("hiddenHttpMethodFilter", filter).addMappingForUrlPatterns(null, false, "/*");
 	}
 }
