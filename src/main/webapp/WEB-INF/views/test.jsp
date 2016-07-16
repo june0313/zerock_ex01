@@ -126,7 +126,8 @@
             success: function (result) {
                 if (result === 'SUCCESS') {
 //                    alert('등록되었습니다.');
-                    getPageList(1);
+                    replyPage = 1;
+                    getPageList(replyPage);
                 }
             }
         })
