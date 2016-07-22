@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -20,7 +21,8 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"org.zerock.persistence", "org.zerock.service"})
+@EnableAspectJAutoProxy // <aop:aspectj-autoproxy> 에 대응되는 annotation
+@ComponentScan(basePackages = {"org.zerock.persistence", "org.zerock.service", "org.zerock.aop"})
 public class RootContextConfiguration {
 
 	@Autowired

@@ -28,6 +28,12 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-test', version: springVersion
     compile group: 'org.springframework', name: 'spring-jdbc', version: springVersion
     compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
+    compile group: 'org.springframework', name: 'spring-tx', version: springVersion
+    compile group: 'org.springframework', name: 'spring-aop', version: springVersion
+
+    // aspectj
+    compile group: 'org.aspectj', name: 'aspectjrt', version: '1.8.9'
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.9'
 
     // mysql
     compile group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
