@@ -40,4 +40,10 @@
         WHERE rno = #{rno}
     </delete>
 
+    <select id="getBno" resultType="int">
+        SELECT bno
+        FROM tbl_reply
+        WHERE rno = #{rno}
+    </select>
+
 </mapper>

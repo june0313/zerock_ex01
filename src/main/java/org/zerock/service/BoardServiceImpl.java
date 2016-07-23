@@ -2,6 +2,8 @@ package org.zerock.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.SearchCriteria;
@@ -24,7 +26,9 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public BoardVO read(Integer bno) throws Exception {
+		dao.updateViewCnt(bno);
 		return dao.read(bno);
 	}
 

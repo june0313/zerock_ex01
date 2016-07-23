@@ -1,5 +1,6 @@
 package org.zerock.persistence;
 
+import com.google.common.collect.Maps;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,7 @@ import org.zerock.domain.Criteria;
 import org.zerock.domain.SearchCriteria;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wayne on 2016. 7. 1..
@@ -75,4 +77,19 @@ public class BoardDAOImpl implements BoardDAO {
 	public int listSearchCount(SearchCriteria cri) throws Exception {
 		return session.selectOne(NAMESPACE + ".listSearchCount", cri);
 	}
+
+	@Override
+	public void updateReplyCnt(Integer bno, int amount) throws Exception {
+		Map<String, Object> paramMap = Maps.newHashMap();
+		paramMap.put("bno", bno);
+		paramMap.put("amount", amount);
+
+		session.update(NAMESPACE + ".updateReplyCnt", paramMap);
+	}
+
+	@Override
+	public void updateViewCnt(Integer bno) throws Exception {
+		session.update(NAMESPACE + ".updateViewCnt", bno);
+	}
+
 }
