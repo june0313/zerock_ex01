@@ -10,7 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
@@ -22,6 +25,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebMvc
 @EnableAspectJAutoProxy // <aop:aspectj-autoproxy> 에 대응되는 annotation
+@EnableTransactionManagement // <tx:annotation-driven>
 @ComponentScan(basePackages = {"org.zerock.persistence", "org.zerock.service", "org.zerock.aop"})
 public class RootContextConfiguration {
 
@@ -50,5 +54,11 @@ public class RootContextConfiguration {
 	@Bean(destroyMethod = "clearCache")
 	public SqlSessionTemplate sqlSession() throws Exception {
 		return new SqlSessionTemplate(sqlSessionFactory());
+	}
+
+	@Bean
+	public PlatformTransactionManager transactionManager() {
+		// 하나의 datasource를 사용하는 경우 스프링에서 제공하는 DataSourceTransactionManager를 사용한다.
+		return new DataSourceTransactionManager(dataSource());
 	}
 }
