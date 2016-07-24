@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.zerock.util.UploadFileUtils;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -56,10 +57,10 @@ public class UploadController {
 	@RequestMapping(value = "/uploadAjax", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception {
 		log.info("originalName: " + file.getOriginalFilename());
-		log.info("size: " + file.getSize());
-		log.info("contentType: " + file.getContentType());
 
-		return new ResponseEntity<>(file.getOriginalFilename(), HttpStatus.CREATED);
+		String uploadedFileName = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
+
+		return new ResponseEntity<>(uploadedFileName, HttpStatus.CREATED);
 	}
 
 	private String uploadFile(String originalFilename, byte[] fileData) throws Exception {

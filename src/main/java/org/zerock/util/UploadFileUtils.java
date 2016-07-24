@@ -31,7 +31,7 @@ public class UploadFileUtils {
 		FileCopyUtils.copy(fileData, target);
 
 		// 원본 파일의 확장자 추출
-		String formatName = originalName.substring(originalName.lastIndexOf('.') + 1);
+		String formatName = originalName.substring(originalName.lastIndexOf('.') + 1).toUpperCase();
 
 		// 이미지 파일인 경우와 그렇지 않은 경우를 나눠서 처리한다.
 		String uploadedFileName;
