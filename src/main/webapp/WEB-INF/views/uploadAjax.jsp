@@ -32,6 +32,32 @@
 
 <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <script>
+    function checkImageType(fileName) {
+        var pattern = /jpg|gif|png|jpeg/i
+
+        return fileName.match(pattern);
+    }
+
+    function getOriginalName(fileName) {
+        if (checkImageType(fileName)) {
+            return;
+        }
+
+        var idx = fileName.indexOf("_") + 1;
+        return fileName.substr(idx);
+    }
+
+    function getImageLink(fileName) {
+        if (!checkImageType(fileName)) {
+            return;
+        }
+
+        var front = fileName.substr(0, 12);
+        var end = fileName.substr(14);
+
+        return front + end;
+    }
+
     $(".fileDrop").on("dragenter dragover", function (event) {
         event.preventDefault();
     });
@@ -54,8 +80,15 @@
             processData: false, // jquery의 ajax를 이용해 FormData를 전송하려면 반드시 false로 설정해야 한다.
             contentType: false, // jquery의 ajax를 이용해 FormData를 전송하려면 반드시 false로 설정해야 한다.
             type: 'POST',
-            success: function(data) {
-                alert(data);
+            success: function (data) {
+                if (checkImageType(data)) {
+                    str = "<div>"
+                            + "<a href='displayFile?fileName=" + getImageLink(data) + "'><img src='displayFile?fileName=" + data + "'/></a></div>";
+                } else {
+                    str = "<div><a href='displayFile?fileName=" + data + "'>" + getOriginalName(data) + "</a></div>";
+                }
+
+                $(".uploadList").append(str);
             }
         });
     });
