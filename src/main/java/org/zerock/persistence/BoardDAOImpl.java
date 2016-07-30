@@ -11,9 +11,10 @@ import org.zerock.domain.SearchCriteria;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.collect.ImmutableMap.of;
+
 /**
  * Created by wayne on 2016. 7. 1..
- *
  */
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -60,11 +61,13 @@ public class BoardDAOImpl implements BoardDAO {
 		return session.selectList(NAMESPACE + ".listPage", page);
 	}
 
-	@Override public List<BoardVO> listCriteria(Criteria criteria) throws Exception {
+	@Override
+	public List<BoardVO> listCriteria(Criteria criteria) throws Exception {
 		return session.selectList(NAMESPACE + ".listCriteria", criteria);
 	}
 
-	@Override public int countPaging(Criteria criteria) throws Exception {
+	@Override
+	public int countPaging(Criteria criteria) throws Exception {
 		return session.selectOne(NAMESPACE + ".countPaging", criteria);
 	}
 
@@ -100,6 +103,16 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public List<String> getAttach(Integer bno) throws Exception {
 		return session.selectList(NAMESPACE + ".getAttach", bno);
+	}
+
+	@Override
+	public void deleteAttach(Integer bno) throws Exception {
+		session.delete(NAMESPACE + ".deleteAttach", bno);
+	}
+
+	@Override
+	public void replaceAttach(String fullName, Integer bno) throws Exception {
+		session.insert(NAMESPACE + ".replaceAttach", of("bno", bno, "fullName", fullName));
 	}
 
 }

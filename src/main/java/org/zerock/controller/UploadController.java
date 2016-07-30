@@ -3,6 +3,7 @@ package org.zerock.controller;
 import com.google.common.base.Joiner;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.util.MediaUtils;
@@ -116,6 +118,31 @@ public class UploadController {
 		}
 
 		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+
+		return new ResponseEntity<>("deleted", HttpStatus.OK);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/deleteAllFiles", method = RequestMethod.POST)
+	public ResponseEntity<String> deletefile(@RequestParam("files[]") String[] files) {
+		log.info("delete all files: " + files);
+
+		if (ArrayUtils.isEmpty(files)) {
+			return new ResponseEntity<>("deleted", HttpStatus.OK);
+		}
+
+		for (String fileName : files) {
+			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1).toUpperCase();
+			MediaType mType = MediaUtils.getMediaType(formatName);
+
+			if(mType != null) {
+				String front = fileName.substring(0, 12);
+				String end = fileName.substring(14);
+				new File(uploadPath + (front + end).replace('/', File.separatorChar)).delete();
+			}
+
+			new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+		}
 
 		return new ResponseEntity<>("deleted", HttpStatus.OK);
 	}
