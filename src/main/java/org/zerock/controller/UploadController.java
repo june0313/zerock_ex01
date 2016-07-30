@@ -100,6 +100,26 @@ public class UploadController {
 		return entity;
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/deleteFile", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteFile(String fileName) {
+		log.info("delete file: " + fileName);
+
+		String formatName = fileName.substring(fileName.lastIndexOf(".") + 1).toUpperCase();
+
+		MediaType mediaType = MediaUtils.getMediaType(formatName);
+
+		if (mediaType != null) {
+			String front = fileName.substring(0, 12);
+			String end = fileName.substring(14);
+			new File(uploadPath + (front + end).replace('/', File.separatorChar)).delete();
+		}
+
+		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+
+		return new ResponseEntity<>("deleted", HttpStatus.OK);
+	}
+
 	private String uploadFile(String originalFilename, byte[] fileData) throws Exception {
 		UUID uuid = UUID.randomUUID();
 
