@@ -3,6 +3,40 @@
 
 <%@include file="../include/header.jsp" %>
 
+<style type="text/css">
+    .popup {
+        position: absolute;
+    }
+
+    .back {
+        background-color: grey;
+        opacity: 0.5;
+        width: 100%;
+        height: 300%;
+        overflow: hidden;
+        z-index: 1101;
+    }
+
+    .front {
+        z-index: 1110;
+        opacity: 1;
+        border: 1px;
+        margin: auto;
+    }
+
+    .show {
+        position: relative;
+        max-width: 1200px;
+        max-height: 800px;
+        overflow: auto;
+    }
+</style>
+
+<div class='popup back' style="display:none;"></div>
+<div id="popup_front" class='popup front' style="display:none;">
+    <img id="popup_img">
+</div>
+
 <!-- Main content -->
 <section class="content">
     <div class="row">
@@ -26,23 +60,24 @@
 
                 <div class="box-body">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Title</label>
+                        <label>Title</label>
                         <input type="text" name='title' class="form-control"
                                value="${boardVO.title}" readonly="readonly">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Content</label>
-      <textarea class="form-control" name="content" rows="3"
-                readonly="readonly">${boardVO.content}</textarea>
+                        <label>Content</label>
+                        <textarea class="form-control" name="content" rows="3"
+                                  readonly="readonly">${boardVO.content}</textarea>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Writer</label>
+                        <label>Writer</label>
                         <input type="text" name="writer" class="form-control"
                                value="${boardVO.writer}" readonly="readonly">
                     </div>
                 </div><!-- /.box-body -->
 
                 <div class="box-footer">
+                    <ul class="mailbox-attachments clearfix uploadedList"></ul>
                     <button type="submit" class="btn btn-warning" id="modify">Modify</button>
                     <button type="submit" class="btn btn-danger" id="remove">REMOVE</button>
                     <button type="submit" class="btn btn-primary" id="go-list">GO LIST</button>
@@ -89,9 +124,9 @@
                     <h3 class="box-title">ADD NEW REPLY</h3>
                 </div>
                 <div class="box-body">
-                    <label for="exampleInputEmail1">Writer</label>
+                    <label>Writer</label>
                     <input class="form-control" type="text" placeholder="UESR ID" id="newReplyWriter">
-                    <label for="exampleInputEmail1">Reply Text</label>
+                    <label>Reply Text</label>
                     <input class="form-control" type="text" placeholder="REPLY TEXT" id="newReplyText">
                 </div>
                 <div class="box-footer">
@@ -102,7 +137,7 @@
             <ul class="timeline">
                 <li class="time-label" id="repliesDiv">
                     <span class="bg-green">
-                        Replies List <small id="replycntSmall"> [ ${boardVO.replycnt} ] </small>
+                        Replies List <small id="replycntSmall"> [ ${boardVO.replycnt} ]</small>
                     </span></li>
             </ul>
 
@@ -135,6 +170,7 @@
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+        <script src="/resources/js/upload.js"></script>
 
         <script id="template" type="text/x-handlebars-template">
             {{#each .}}
@@ -157,6 +193,17 @@
                 </div>
             </li>
             {{/each}}
+        </script>
+
+        <script id="templateAttach" type="text/x-handlebars-template">
+            <li data-src="{{fullName}}">
+                <span class="mailbox-attachment-icon has-img">
+                    <img src="{{imgsrc}}" alt="Attachment">
+                </span>
+                <div class="mailbox-attachment-info">
+                    <a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+                </div>
+            </li>
         </script>
 
         <script>
@@ -268,7 +315,7 @@
             });
 
             // 댓글 수정
-            $("#replyModBtn").on("click", function (){
+            $("#replyModBtn").on("click", function () {
                 var rno = $('.modal-title').html();
                 var replytext = $('#replytext').val();
 
@@ -285,7 +332,7 @@
                     dataType: 'text',
                     success: function (result) {
                         console.log('result:' + result);
-                        if(result === 'SUCCESS') {
+                        if (result === 'SUCCESS') {
                             alert('수정 되었습니다.');
                             getPage("/replies/" + bno + "/" + replyPage);
                         }
@@ -315,6 +362,38 @@
                     }
                 });
             });
+
+            // 첨부파일 조회
+            var templateAttach = Handlebars.compile($("#templateAttach").html());
+            $.getJSON("/sboard/getAttach/" + bno, function (list) {
+                $(list).each(function () {
+                    var fileInfo = getFileInfo(this);
+                    var html = templateAttach(fileInfo);
+                    $(".uploadedList").append(html);
+                });
+            });
+
+            // 이미지 파일 원본 보기
+            $(".uploadedList").on("click", ".mailbox-attachment-info a", function (event) {
+                var fileLink = $(this).attr('href');
+
+                if (checkImageType(fileLink)) {
+                    event.preventDefault();
+
+                    var imgTag = $("#popup_img");
+                    imgTag.attr("src", fileLink);
+
+                    console.log(imgTag.attr("src"));
+
+                    $(".popup").show('slow');
+                    imgTag.addClass('show');
+                }
+            });
+
+            $("#popup_img").on("click", function () {
+                $(".popup").hide('slow');
+            });
+
         </script>
     </div>
 </section>

@@ -18,7 +18,7 @@ function getFileInfo(fullName) {
 		var front = fullName.substr(0, 12);
 		var end = fullName.substr(14);
 
-		getLink = "displayFile?fileName=" + front + end;
+		getLink = "/displayFile?fileName=" + front + end;
 	} else {
 		imgsrc = "/resources/dist/img/file.png";
 		fileLink = fullName.substr(12);

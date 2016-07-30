@@ -28,4 +28,6 @@ public interface BoardService {
 	List<BoardVO> listSearchCriteria(SearchCriteria cri) throws Exception;
 
 	int listSearchCount(SearchCriteria cri) throws Exception;
+
+	public List<String> getAttach(Integer bno) throws Exception;
 }

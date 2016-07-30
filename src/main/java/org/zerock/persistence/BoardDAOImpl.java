@@ -97,4 +97,9 @@ public class BoardDAOImpl implements BoardDAO {
 		session.insert(NAMESPACE + ".addAttach", fullName);
 	}
 
+	@Override
+	public List<String> getAttach(Integer bno) throws Exception {
+		return session.selectList(NAMESPACE + ".getAttach", bno);
+	}
+
 }
