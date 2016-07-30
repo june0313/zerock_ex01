@@ -31,10 +31,21 @@
                             <input type="text"
                                    name="writer" class="form-control" placeholder="Enter Writer">
                         </div>
+
+                        <div class="form-group">
+                            <label>File DROP Here</label>
+                            <div class="fileDrop"></div>
+                        </div>
                     </div>
                     <!-- /.box-body -->
 
                     <div class="box-footer">
+                        <div>
+                            <hr>
+                        </div>
+
+                        <ul class="mailbox-attachments clearfix uploadedList"></ul>
+
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>

@@ -10,6 +10,7 @@ import org.zerock.domain.SearchCriteria;
 import org.zerock.persistence.BoardDAO;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Created by wayne on 2016. 7. 4..
@@ -21,8 +22,19 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDAO dao;
 
 	@Override
+	@Transactional
 	public void regist(BoardVO board) throws Exception {
 		dao.create(board);
+
+		List<String> files = board.getFiles();
+
+		if (files == null) {
+			return;
+		}
+
+		for(String fullName : files) {
+			dao.addAttach(fullName);
+		}
 	}
 
 	@Override

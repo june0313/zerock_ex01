@@ -92,4 +92,9 @@ public class BoardDAOImpl implements BoardDAO {
 		session.update(NAMESPACE + ".updateViewCnt", bno);
 	}
 
+	@Override
+	public void addAttach(String fullName) throws Exception {
+		session.insert(NAMESPACE + ".addAttach", fullName);
+	}
+
 }

@@ -34,4 +34,6 @@ public interface BoardDAO {
 	void updateReplyCnt(Integer bno, int amount) throws Exception;
 
 	void updateViewCnt(Integer bno) throws Exception;
+
+	void addAttach(String fullName) throws Exception;
 }
