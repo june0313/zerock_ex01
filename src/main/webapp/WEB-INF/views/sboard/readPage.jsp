@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 
@@ -78,8 +79,10 @@
 
                 <div class="box-footer">
                     <ul class="mailbox-attachments clearfix uploadedList"></ul>
-                    <button type="submit" class="btn btn-warning" id="modify">Modify</button>
-                    <button type="submit" class="btn btn-danger" id="remove">REMOVE</button>
+                    <c:if test="${login.uid == boardVO.writer}">
+                        <button type="submit" class="btn btn-warning" id="modify">Modify</button>
+                        <button type="submit" class="btn btn-danger" id="remove">REMOVE</button>
+                    </c:if>
                     <button type="submit" class="btn btn-primary" id="go-list">GO LIST</button>
                 </div>
 
@@ -142,15 +145,21 @@
                 <div class="box-header">
                     <h3 class="box-title">ADD NEW REPLY</h3>
                 </div>
-                <div class="box-body">
-                    <label>Writer</label>
-                    <input class="form-control" type="text" placeholder="UESR ID" id="newReplyWriter">
-                    <label>Reply Text</label>
-                    <input class="form-control" type="text" placeholder="REPLY TEXT" id="newReplyText">
-                </div>
-                <div class="box-footer">
-                    <button type="button" class="btn btn-primary" id="replyAddBtn">ADD REPLY</button>
-                </div>
+                <c:if test="${not empty login}">
+                    <div class="box-body">
+                        <label>Writer</label>
+                        <input class="form-control" type="text" id="newReplyWriter" value="${login.uid}" readonly="readonly">
+                        <label>Reply Text</label>
+                        <input class="form-control" type="text" placeholder="REPLY TEXT" id="newReplyText">
+                    </div>
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-primary" id="replyAddBtn">ADD REPLY</button>
+                    </div>
+                </c:if>
+
+                <c:if test="${empty login}">
+                    <div><a href="javascript:goLogin()">Please Login</a></div>
+                </c:if>
             </div>
 
             <ul class="timeline">

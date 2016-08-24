@@ -12,6 +12,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.zerock.interceptor.AuthInterceptor;
+import org.zerock.interceptor.LoginInterceptor;
 import org.zerock.interceptor.SampleInterceptor;
 
 /**
@@ -25,6 +27,10 @@ public class ServletContextConfiguration extends WebMvcConfigurerAdapter {
 
 	@Autowired
 	private SampleInterceptor sampleInterceptor;
+	@Autowired
+	private LoginInterceptor loginInterceptor;
+	@Autowired
+	private AuthInterceptor authInterceptor;
 
 	@Bean
 	public ViewResolver viewResolver() {
@@ -54,5 +60,10 @@ public class ServletContextConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(sampleInterceptor).addPathPatterns("/doA").addPathPatterns("/doB");
+		registry.addInterceptor(loginInterceptor).addPathPatterns("/user/loginPost");
+		registry.addInterceptor(authInterceptor)
+			.addPathPatterns("/sboard/register")
+			.addPathPatterns("/sboard/modifyPage")
+			.addPathPatterns("/sboard/removePage");
 	}
 }
