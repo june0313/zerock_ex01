@@ -6,10 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.WebUtils;
 import org.zerock.domain.UserVO;
 import org.zerock.dto.LoginDTO;
 import org.zerock.service.UserService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
@@ -45,5 +49,25 @@ public class UserController {
 			service.keepLogin(vo.getUid(), session.getId(), sessionLimit);
 		}
 
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public void logout(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) throws Exception {
+		Object obj = httpSession.getAttribute("login");
+
+		if (obj != null) {
+			UserVO vo = (UserVO) obj;
+			httpSession.removeAttribute("login");
+			httpSession.invalidate();
+
+			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+
+			if (loginCookie != null) {
+				loginCookie.setPath("/");
+				loginCookie.setMaxAge(0);
+				response.addCookie(loginCookie);
+				service.keepLogin(vo.getUid(), httpSession.getId(), new Date());
+			}
+		}
 	}
 }
